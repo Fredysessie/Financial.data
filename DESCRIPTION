@@ -1,11 +1,12 @@
 Package: Financial.data
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Retrieve Financial Data of Companies Listed on from various stock exchanges
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: 
+    person("Sessie","Koffi Frederic", email = "koffisessie@gmail.com",
+            role = c("aut","cre","cph"))
+Description: The Financial.data R Package is a powerful tool for accessing and retrieving financial information from various stock exchanges, including platforms like Investing and Yahoo Finance.
+    Whether you are interested in BS, Income Statement, Cash flow, stocks, indexes, funds, ETFs, bonds and more, this package provides a convenient interface.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
