@@ -10,3 +10,16 @@ Description: The Financial.data R Package is a powerful tool for accessing and r
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+  httr,
+  magrittr,
+  stringr,
+  jsonlite,
+    rlang(>= 0.4.11),
+    rvest,
+    httr2,
+    xts,
+    dplyr #,flextable, #highcharter, #grDevices
+Suggests:
+    lubridate
+RoxygenNote: 7.2.3

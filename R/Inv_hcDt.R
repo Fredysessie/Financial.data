@@ -51,10 +51,20 @@
 #' @author Koffi Frederic SESSIE
 #'
 #' @examples
-#' \dontrun{
-#' # Fetch historical data for France 5Y OAT over the past 1 year with daily intervals
-#' data <- Inv_hcDt(ticker_id = 23769, period = "P1Y")
-#' }
+#' library(httr)
+#' library(jsonlite)
+#' library(tibble)
+#' library(glue)
+#' library(rlang)
+#' #\donttest{
+#' # Fetch historical data daily for France 5Y OAT
+#' data <- Inv_hcDt(ticker_id = 23769) #23763 is OAT 5y id
+#' head(data)
+#'
+#' # Fetch historical data for France 5Y OAT over 1 year with weekly interval
+#' data_w <- Inv_hcDt(ticker_id = 23769, interval <- 'P1W', period = "P1Y")
+#' head(data_w)
+#' #}
 #'
 #' @export
 #'
@@ -81,7 +91,7 @@ Inv_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
 
   UA <- "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"
 
-  url <- glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/")
+  url <- glue::glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/")
 
   if (is.null(period)) {
     if (is.null(interval)) {
@@ -100,10 +110,10 @@ Inv_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
           # period = period,
           pointscount = pointscount
         )
-        # url <- glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/?interval={interval}&pointscount={pointscount}")
+        # url <- glue::glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/?interval={interval}&pointscount={pointscount}")
 
       } else {
-        stop(glue("{interval} is not a valid interval"))
+        stop(glue::glue("{interval} is not a valid interval"))
       }
     }
   } else {
@@ -132,9 +142,9 @@ Inv_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
         pointscount = pointscount
       )
 
-      # url <- glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/?interval={interval}&period={period}&pointscount={pointscount}")
+      # url <- glue::glue("https://api.investing.com/api/financialdata/{ticker_id}/historical/chart/?interval={interval}&period={period}&pointscount={pointscount}")
     } else {
-      stop(glue("{period} is not a valid period"))
+      stop(glue::glue("{period} is not a valid period"))
     }
   }
 
@@ -177,13 +187,13 @@ Inv_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
       }
     },
     error = function(e) {
-      message(glue("Attempt {attempt} failed: {e$message}"))
+      message(glue::glue("Attempt {attempt} failed: {e$message}"))
       if (attempt == max_retries) {
         stop("Max retries reached. Make sure you have an active internet connection and valid parameters.")
       }
     },
     warning = function(w) {
-      message(glue("Attempt {attempt} warning: {w$message}"))
+      message(glue::glue("Attempt {attempt} warning: {w$message}"))
     })
 
     Sys.sleep(1) # Pause before the next attempt
