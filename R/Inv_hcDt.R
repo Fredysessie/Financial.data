@@ -58,18 +58,18 @@
 #' library(rlang)
 #' #\donttest{
 #' # Fetch historical data daily for France 5Y OAT
-#' data <- Inv_hcDt(ticker_id = 23769) #23763 is OAT 5y id
+#' data <- INV_hcDt(ticker_id = 23769) #23763 is OAT 5y id
 #' head(data)
 #'
 #' # Fetch historical data for France 5Y OAT over 1 year with weekly interval
-#' data_w <- Inv_hcDt(ticker_id = 23769, interval <- 'P1W', period = "P1Y")
+#' data_w <- INV_hcDt(ticker_id = 23769, interval <- 'P1W', period = "P1Y")
 #' head(data_w)
 #' #}
 #'
 #' @export
 #'
 
-Inv_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5) {
+INV_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5) {
   period <- period
   interval <- interval
 
