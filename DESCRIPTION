@@ -8,12 +8,16 @@ Authors@R:
 Description: The Financial.data R Package is a powerful tool for accessing and retrieving financial information from various stock exchanges, including platforms like Investing and Yahoo Finance.
     Whether you are interested in BS, Income Statement, Cash flow, stocks, indexes, funds, ETFs, bonds and more, this package provides a convenient interface.
 License: MIT + file LICENSE
+URL: https://rpubs.com/Fredysessie/Financial.data
+BugReports: https://github.com/Fredysessie/Financial.data/issues
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
 Imports:
   rvest,
   magrittr,
   glue,
   httr,
   jsonlite
+Suggests:
+    lubridate
+RoxygenNote: 7.2.3

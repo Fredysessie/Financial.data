@@ -18,7 +18,6 @@
 #' # Retrieve the ID of 'SNTS' from BRVM exchange
 #' INV_get_id("SNTS", exchange = "BRVM")
 #'
-#'
 #' @seealso \code{\link{INV_get_info}} for retrieving more detailed information about the asset.
 #'
 #' @export
