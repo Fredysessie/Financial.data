@@ -23,12 +23,16 @@
 #' @details The function makes use of Investing.com's API to retrieve historical financial data for the specified ticker symbol. It includes a retry mechanism to handle request failures with customizable retry limits and delay intervals between retries.
 #'
 #' @examples
+#' \dontrun{
+#' library(stringr)
+#' library(rlang)
+#' library(tibble)
 #' # Fetch daily data for ETIT from 2024-09-08 to 2024-05-08
 #' dt <- INV_fetch_prices("ETIT", from = "2024-09-08", to = "2024-05-08", time_frame = 'Daily')
 #'
 #' # Fetch monthly data for AAPL from 2022-01-01 to 2024-01-01
 #' dt_apple <- INV_fetch_prices("AAPL", from = "2022-01-01", to = "2024-01-01", time_frame = 'Monthly')
-#'
+#'}
 #' @seealso \code{\link{INV_hcDt}} for related data fetching utilities.
 #'
 #' @author

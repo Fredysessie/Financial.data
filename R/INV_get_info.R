@@ -20,6 +20,11 @@
 #' @author Koffi Frederic SESSIE
 #'
 #' @examples
+#' library(httr)
+#' library(jsonlite)
+#' library(rvest)
+#' library(glue)
+#' library(magrittr)
 #'
 #' # Retrieve information on Ecobank Transnational Inc.
 #' INV_get_info("ETIT")
@@ -32,12 +37,13 @@
 #' INV_get_info("societe general sa", exchange = "EuroTLX")
 #' }
 #'
+#' @import magrittr
 #' @export
 
 INV_get_info <- function(info, language="en", exchange = NULL) {
 
   if (!is.character(info)) {
-    stop(glue("{info} must be a character"))
+    stop(glue::glue("{info} must be a character"))
   }
 
   # Supprimer le dernier espace si nécessaire
@@ -72,8 +78,8 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
   search_info <- httr::GET(url = search_url, httr::add_headers(.headers=headers), query = params)
 
   # Vérifier le statut de la réponse
-  if (status_code(search_info) == 200) {
-    search_info_json <- content(search_info, as = "text", encoding = "UTF-8")
+  if (httr::status_code(search_info) == 200) {
+    search_info_json <- httr::content(search_info, as = "text", encoding = "UTF-8")
 
     # Gérer les erreurs de conversion JSON
     tryCatch({
@@ -93,10 +99,10 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
         UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
 
         for (elm in search_quotes$url) {
-          response <- GET(
+          response <- httr::GET(
             elm,
-            user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"),
-            add_headers(
+            httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"),
+            httr::add_headers(
               Referer = "https://www.investing.com",
               `Accept-Language` = "en-US,en;q=0.9",
               `Accept-Encoding` = "gzip, deflate",
@@ -105,16 +111,16 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
           )
 
           # Parse the HTML content from the response
-          html_page <- content(response, as = "text")
-          html_page <- read_html(html_page)
+          html_page <- httr::content(response, as = "text")
+          html_page <- rvest::read_html(html_page)
 
           # Extraire ISIN et YTD en vérifiant la validité des données avant traitement
-          the_isin <- html_page %>%
-            html_node("dd[data-test='isin']") %>%
+          the_isin <- html_page%>%
+            html_node("dd[data-test='isin']")%>%
             html_text()
 
-          the_ytd <- html_page %>%
-            html_node("dd[data-test='oneYearReturn']") %>%
+          the_ytd <- html_page%>%
+            html_node("dd[data-test='oneYearReturn']")%>%
             html_text()
 
           # Vérifier si the_isin est NULL ou NA avant d'utiliser substr()
@@ -144,7 +150,7 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
           index_exchange <- grep(exchange, toupper(search_quotes$exchange))
 
           if (length(index_exchange) != 0) {
-            search_quotes <- as_tibble(search_quotes[index_exchange, ])
+            search_quotes <- tibble::as_tibble(search_quotes[index_exchange, ])
           }
         }
 
@@ -153,11 +159,11 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
         return("")
       }
     } else {
-      stop(glue("{info} has no ID. Please check your input."))
+      stop(glue::glue("{info} has no ID. Please check your input."))
     }
   } else {
     # Gérer les erreurs de requête
-    stop(glue("Erreur {status_code(search_info)}: {content(search_info, as = 'text')}"))
+    stop(glue::glue("Erreur {httr::status_code(search_info)}: {httr::content(search_info, as = 'text')}"))
   }
 }
 
@@ -212,7 +218,7 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
 #
 #   # Vérifier le statut de la réponse
 #   if (status_code(search_info) == 200) {
-#     search_info_json <- content(search_info, as = "text", encoding = "UTF-8")
+#     search_info_json <- httr::content(search_info, as = "text", encoding = "UTF-8")
 #
 #     # Gérer les erreurs de conversion JSON
 #     tryCatch({
@@ -234,11 +240,11 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
 #         UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
 #
 #         for(elm in search_quotes$url){
-#           # html_page = read_html(elm)
+#           # html_page = rvest::read_html(elm)
 #
 #           response <- GET(
 #             elm,
-#             user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"),
+#             httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"),
 #             add_headers(
 #               Referer = "https://www.investing.com",
 #               `Accept-Language` = "en-US,en;q=0.9",
@@ -248,8 +254,8 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
 #           )
 #
 #           # Parse the HTML content from the response
-#           html_page <- content(response, as = "text")
-#           html_page <- read_html(html_page)
+#           html_page <- httr::content(response, as = "text")
+#           html_page <- rvest::read_html(html_page)
 #
 #
 #
@@ -310,7 +316,7 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
 #           index_exchange <- grep(exchange, search_quotes$exchange)
 #
 #           if (length(index_exchange)!=0) {
-#             search_quotes <- as_tibble(search_quotes[index_exchange,])
+#             search_quotes <- tibble::as_tibble(search_quotes[index_exchange,])
 #
 #           }
 #
@@ -326,6 +332,6 @@ INV_get_info <- function(info, language="en", exchange = NULL) {
 #     }
 #   } else {
 #     # Gérer les erreurs de requête
-#     stop(glue("Erreur {status_code(search_info)}: {content(search_info, as = 'text')}"))
+#     stop(glue("Erreur {status_code(search_info)}: {httr::content(search_info, as = 'text')}"))
 #   }
 # }

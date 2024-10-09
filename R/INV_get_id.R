@@ -11,6 +11,11 @@
 #' @author Koffi Frederic SESSIE
 #'
 #' @examples
+#' library(httr)
+#' library(jsonlite)
+#' library(rvest)
+#' library(glue)
+#' library(magrittr)
 #'
 #' # Retrieve the ID of "aaple" (Apple Inc.)
 #' INV_get_id("aaple")
@@ -29,7 +34,7 @@ INV_get_id <- function(info, language="en", exchange = NULL) {
                            exchange = exchange)
 
   if (is.null(dim(elem_info))) {
-    stop(glue("{info} does not exist. Please check the information provided."))
+    stop(glue::glue("{info} does not exist. Please check the information provided."))
   }else{
     the_id = elem_info$id
     return(the_id)

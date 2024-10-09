@@ -73,6 +73,12 @@ INV_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
   period <- period
   interval <- interval
 
+  # Some useful keyboard shortcuts for package authoring:
+  #
+  #   Install Package:           'Ctrl + Shift + B'
+  #   Check Package:             'Ctrl + Shift + E'
+  #   Test Package:              'Ctrl + Shift + T'
+
   acceptable_interval <- c("PT1M", "PT5M", "PT15M","PT30M", # For minutes
                            "PT1H", "PT5H", # For hours
                            "P1D", # one day
@@ -165,8 +171,8 @@ INV_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
       # Sys.sleep(2)
       # try_get_data <- xml_text(try_get_data %>% rvest::html_nodes('p')) %>% fromJSON()
 
-      if (is_empty(json_data$data)) {
-        # if (is_empty(try_get_data$data)) {
+      if (rlang::is_empty(json_data$data)) {
+        # if (rlang::is_empty(try_get_data$data)) {
         stop('No data available for the ticker... Be sure to provide good parameters')
       } else {
         # ticker_dt <- try_get_data$data
@@ -179,7 +185,7 @@ INV_hcDt <- function(ticker_id, interval = NULL, period = NULL, max_retries = 5)
           names(ticker_dt) <- c('Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Extra_info')
         }
 
-        ticker_dt <- as_tibble(ticker_dt)
+        ticker_dt <- tibble::as_tibble(ticker_dt)
         names(ticker_dt) <- c('Date', 'Open', 'High', 'Low', 'Close', 'Volume')
         ticker_dt$Date <- as.POSIXct((ticker_dt$Date+0.1)/1000, origin = "1970-01-01")
 

@@ -9,15 +9,17 @@ Description: The Financial.data R Package is a powerful tool for accessing and r
     Whether you are interested in BS, Income Statement, Cash flow, stocks, indexes, funds, ETFs, bonds and more, this package provides a convenient interface.
 License: MIT + file LICENSE
 URL: https://rpubs.com/Fredysessie/Financial.data
-BugReports: https://github.com/Fredysessie/Financial.data/issues
+BugReports: https://github.com/Fredysessie/Financial.oupdata/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports:
   rvest,
-  magrittr,
   glue,
   httr,
-  jsonlite
+  magrittr,
+  jsonlite,
+  tibble,
+  rlang
 Suggests:
     lubridate
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
